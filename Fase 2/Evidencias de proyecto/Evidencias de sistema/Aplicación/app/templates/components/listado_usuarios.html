@@ -1,0 +1,50 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <th>Nombre de usuario</th>
+                <th>Puntos</th>
+            </thead>
+            <tbody>
+                {% for empleado in empleados %}
+                <tr>
+                    <td>{{ empleado.usuario }}</td>
+                    <td>{{ empleado.puntos }}</td>
+                    <td>
+                        <a href="{% url 'asignar_puntos' empleado.id %}">Asignar puntos</a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <thead>
+                <th>Nombre de usuario</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Email</th>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.username }}</td>
+                    <td>{{ usuario.first_name }}</td>
+                    <td>{{ usuario.last_name }}</td>
+                    <td>{{ usuario.email }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'crear_puntos' %}" class="btn btn-primary">Asignar puntos</a>
+        <a href="{% url 'register' %}" class="btn btn-primary">Registrar usuario</a>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <th>Nombre</th>
+            </thead>
+            <tbody>
+                {% for marca in marcas %}
+                <tr>
+                    <td>{{ marca.nombre }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td>No hay marcas registradas</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'add_marca' %}" class="btn btn-primary">Agregar</a>
+    </div>
+</div>
+
+{% endblock %}
