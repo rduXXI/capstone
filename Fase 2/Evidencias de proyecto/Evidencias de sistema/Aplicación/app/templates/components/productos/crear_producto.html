@@ -1,0 +1,92 @@
+{% extends 'layouts/base_admin.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+
+<style>
+    .btn.btn-dark {
+        font-size: 25px;
+        font-family: 'Bebas Neue';
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="form-floating">
+                    {{ form.marca | add_class:"form-control" }}
+                    <label for="id_marca">Seleccionar marca</label>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <div class="form-floating mb-4">
+                            {{ form.nombre | add_class:"form-control" }}
+                            <label for="id_nombre">Nombre del producto</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <div class="form-floating mb-4">
+                            {{ form.descripcion | add_class:"form-control" }}
+                            <label for="id_descripcion">Descripción</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <div class="form-floating mb-4">
+                            {{ form.abv | add_class:"form-control" }}
+                            <label for="id_abv">Alc. (%)</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <div class="form-floating mb-4">
+                            {{ form.contenido | add_class:"form-control" }}
+                            <label for="id_contenido">Cont. Neto (ml)</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <div class="form-floating mb-4">
+                            {{ form.puntos_requeridos | add_class:"form-control" }}
+                            <label for="id_puntos_requeridos">Puntos requeridos</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-floating mb-4">
+                    {{ form.categoria|add_class:"form-control" }}
+                    <label for="id_categoria">Seleccionar categoria</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-floating mb-4">
+                    {{ form.pais_origen |add_class:"form-control" }}
+                    <label for="id_pais_origen">Seleccionar procedencia</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-floating mb-4">
+                    {{ form.proveedor|add_class:"form-control" }}
+                    <label for="id_proveedor">Seleccionar proveedor</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-dark">Agregar</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

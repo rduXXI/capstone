@@ -1,0 +1,26 @@
+{% extends 'layouts/base.html' %}
+
+<!-- templates/cart/ver_carrito.html -->
+
+<h2>Carrito de Compras</h2>
+
+{% if carrito_items %}
+<div class="card">
+    <div class="card-body">
+        {% for item in carrito_items %}
+        <ul>
+            <li>
+                {{ item.producto.nombre }} - {{ item.cantidad }} x {{ item.producto.puntos_requeridos }} puntos = {{
+                item.get_total_puntos }} puntos
+                <a href="{% url 'eliminar_del_carrito' item.id %}">Eliminar</a>
+            </li>
+        </ul>
+        {% endfor %}
+    </div>
+</div>
+
+<p>Total de puntos requeridos: {{ total_puntos_requeridos }}</p>
+<a href="{% url 'confirmar_canje' %}">Confirmar Canje</a>
+{% else %}
+<p>El carrito está vacío.</p>
+{% endif %}

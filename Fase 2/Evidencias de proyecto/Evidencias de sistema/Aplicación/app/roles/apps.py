@@ -1,6 +1,10 @@
 from django.apps import AppConfig
+from django.db.models.signals import post_migrate
 
 
 class RolesConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'roles'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "roles"
+
+    def ready(self):
+        import roles.signals

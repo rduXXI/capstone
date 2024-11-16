@@ -1,0 +1,61 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<style>
+    .btn.btn-dark {
+        font-size: 25px;
+        font-family: 'Bebas Neue';
+    }
+
+    h5 {
+        font-size: 25px;
+        font-family: 'Bebas Neue';
+    }
+</style>
+
+{% if sorteo %}
+
+<div class="container col-md-4 offset-md mt-4">
+    <div class="card">
+        <div class="card-body">
+            <h4>Tus puntos para participar: {{ empleado.puntos }} </h4>
+        </div>
+    </div>
+    <br>
+    {% if empleado.puntos >= producto.puntos_requeridos %}
+    <div class="card text-center">
+        <img src="{{ producto.imagen.url }}" alt="" class="img-fluid">
+        <div class="card-body">
+            <h5 class="card-title">
+                {{ producto.descripcion }} de {{ producto.nombre }} de {{ producto.contenido}} ml
+            </h5>
+            <p class="card-text">No dejes pasar esta oportunidad, participa y gana por este producto a la mitad de los
+                puntos.</p>
+            <form method="post" action="{% url 'participar' producto.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-dark">Participar</button>
+            </form>
+            {% else %}
+            <h4>No tienes suficientes puntos para participar.</h4>
+            {% endif %}
+        </div>
+    </div>
+
+    {% else %}
+
+    <div class="container mt-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h4>No hay sorteos disponibles en este momento.</h4>
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+</div>
+
+
+{% endblock %}

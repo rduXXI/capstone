@@ -1,0 +1,34 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+<table class="table table">
+    <thead>
+        <tr>
+            <th>Subasta</th>
+            <th>Puntos Ofrecidos</th>
+            <th>Estado de la Subasta</th>
+            <th>Fecha de Finalización</th>
+            <th>Resultado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for puja in pujas %}
+        <tr>
+            <td>{{ puja.subasta.producto.nombre }}</td>
+            <td>{{ puja.puntos_ofrecidos }}</td>
+            <td>{{ puja.subasta.estado }}</td>
+            <td>{{ puja.subasta.fecha_fin }}</td>
+            <td>
+                {% if puja.subasta.ganador == puja.empleado %}
+                <button class="btn btn-success" disabled>¡Ganaste esta subasta!</button>
+                {% else %}
+                <button class="btn btn-danger">No ganaste esta subasta</button>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

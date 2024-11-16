@@ -1,7 +1,8 @@
 from django.urls import path
-from canjeo.views import canjear_producto, obtener_canjeos
+from . import views
 
 urlpatterns = [
-    path('canjear/<int:producto_id>/', canjear_producto, name='canjear'),
-    path('obtener_canjeos/', obtener_canjeos, name='obtener_canjeos'),
+    path("canjear/", views.canjear_producto, name="canjear"),
+    path('canje/<int:orden_id>/aprobar/', views.aprobar_rechazar_canje, {'accion': 'aprobar'}, name='aprobar_canje'),
+    path('canje/<int:orden_id>/rechazar/', views.aprobar_rechazar_canje, {'accion': 'rechazar'}, name='rechazar_canje'),
 ]

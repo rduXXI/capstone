@@ -1,0 +1,45 @@
+{% extends 'layouts/base_admin.html' %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>ID Orden</th>
+                    <th>Empleado</th>
+                    <th>Puntos totales gastados</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for orden in ordenes %}
+                <tr>
+                    <td>{{ orden.id }}</td>
+                    <td>{{ orden.empleado.username }}</td>
+                    <td>{{ orden.total_puntos }}</td>
+                    <td>{{ orden.fecha_creacion }}</td>
+                    <td>
+                        <a href="{% url 'generar_factura_pdf' orden.id %}" class="btn btn-danger btn-lg">
+                            <i class="bi bi-filetype-pdf"></i>
+                        </a>
+
+                        <form action="{% url 'enviar_factura_email' orden.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-dark btn-lg">
+                                <i class="bi bi-envelope"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+{% endblock %}

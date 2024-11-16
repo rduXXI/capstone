@@ -1,15 +1,137 @@
 {% extends 'layouts/base.html' %}
 
+{% load static %}
+
 {% block content %}
 
-<div class="card">
-    <div class="card-body">
-        <h1>Bienvenido, {{ request.user.first_name }} {{ request.user.last_name }}</h1>
-        {% if request.user.is_authenticated %}
-        <a href="{% url 'logout' %}" class="btn btn-primary">Cerrar sesión</a>
-        {% else %}
-        <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a>
+<style>
+    .container.btn-dark {
+        background-color: rgba(0, 0, 0, 0.85);
+
+    }
+
+    .btn-dark {
+        font-size: 25px;
+        font-family: 'Bebas Neue';
+    }
+
+    .btn-warning {
+        font-size: 25px;
+        font-family: 'Bebas Neue';
+    }
+
+    .h2 {
+        color: gold;
+        font-size: 50px;
+        font-family: 'Bebas Neue';
+    }
+
+    .h5 {
+        color: white;
+        font-size: 20px;
+        font-family: 'Bebas Neue';
+    }
+
+    hr {
+        border: 2px solid;
+        color: white;
+    }
+
+    .card-text {
+        color: white;
+        font-size: 25px;
+        font-family: 'Bebas Neue';
+    }
+</style>
+
+<div class="container bg-dark py-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2 class="card-title h2">
+                Nuestra visión
+            </h2>
+            <p class="card-text" style="text-align: justify;">
+                Explora el sabor y el carácter en cada sorbo de nuestros productos, respaldados por una selección de
+                marcas excepcionales. Sumérgete en los toques suaves, ahumados y dulces de Johnnie Walker, una
+                experiencia que evoca tradición y sofisticación. Viaja con nosotros hasta el fin del mundo, a
+                las tierras remotas de Punta Arenas en Chile, con la Cervecería Austral, que captura la esencia única de
+                su paisaje en cada botella. Nos enorgullece ofrecerte esta diversidad de sabores y tradiciones que
+                marcan la diferencia en cada momento.
+            </p>
+        </div>
+    </div>
+    <h2 class="text-center h2">Productos Destacados</h2>
+    <div class="row">
+        {% for producto in productos %}
+        {% if producto.destacado == True %}
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ producto.imagen.url }}" class="card-img-top" alt="Whiskey">
+                <div class="card-body">
+                    <h5 class="card-title h5">
+                        {{ producto.categoria }} {{ producto.nombre }}
+                    </h5>
+                    <div div class="d-grid gap-2">
+                        <a href="{% url 'catalogo' %}" class="btn btn-dark">Canjear ahora</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% endif %}
+        {% endfor %}
+    </div>
+    <br>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="static\img\202736-1600-auto.jpg" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+            <h2 class="h2">Descuento del 50% en todos los productos</h2>
+            <div class="card-dark">
+                <div class="card-body">
+                    <p class="card-text" style="text-align: justify;">
+                        ¡Aprovecha sorteos limitados y disfruta de tus bebidas favoritas a precios increíbles!
+                    </p>
+                    <div div class="d-grid gap-2">
+                        <a href="{% url 'sorteos' %}" class="btn btn-warning">Ver sorteos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="card-title h2">
+                Compite
+            </h2>
+            <p class="card-text" style="text-align: justify;">
+                Compite en emocionantes subastas y suma puntos para obtener sorprendentes recompensas.
+                Si pierdes... ¡No pasa nada! ¡Tus puntos serán reembolsados y podrás volver a participar en una
+                siguiente subasta!
+                ¡Recuerda usar tus puntos sabiamente!
+            </p>
+            <div div class="d-grid gap-2">
+                <a href="{% url 'lista_subastas' %}" class="btn btn-warning">Ver subastas</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <img src="static/img/Tequilitss.png" class="img-fluid">
+        </div>
+    </div>
+    <hr>
+    <div class="row mb-4">
+        <h5 class="card-title h2 mb-4" style="text-align: center;">
+            Marcas asociadas
+        </h5>
+        {% for marca in marcas %}
+        <div class="col-md-4 mb-4">
+            <h5 class="card-text" style="text-align: center;">
+                {{ marca.nombre }} ®
+            </h5>
+        </div>
+        {% endfor %}
     </div>
 </div>
 

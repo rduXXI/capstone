@@ -1,0 +1,39 @@
+{% extends 'layouts/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+
+<style>
+    .btn.btn-dark {
+        font-size: 25px;
+        font-family: 'Bebas Neue';
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+                {{ form.rut | add_class:"form-control" }}
+                <label for="id_rut">RUT de la empresa</label>
+            </div>
+            <div class="form-floating mb-3">
+                {{ form.nombre | add_class:"form-control" }}
+                <label for="id_nombre">Nombre del proveedor</label>
+            </div>
+            <div class="form-floating mb-3">
+                {{ form.telefono | add_class:"form-control" }}
+                <label for="id_telefono">Número de contacto</label>
+            </div>
+            <button type="submit" class="btn btn-dark">
+                Agregar
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -10,14 +10,130 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Homemade+Apple&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel+Decorative:wght@400;700;900&family=Homemade+Apple&display=swap"
+        rel="stylesheet">
+
+
+    <style>
+        body {
+            background-image: url('https://images.pexels.com/photos/159291/beer-machine-alcohol-brewery-159291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .btn-dark {
+            color: gold;
+            font-size: 30px;
+            font-family: 'Bebas Neue';
+        }
+
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 8px;
+        }
+    </style>
 </head>
 
+{% load crispy_forms_tags %}
+
+{% load widget_tweaks %}
+
 <body>
-    <form action="{% url 'register' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Ingresar</button>
-    </form>
+    <div class="container col-md-4 offset-md mt-4">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" class="form-horizontal" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-10">
+                            <div class="form-floating mb-3">
+                                {{ form.run | add_class:"form-control" }}
+                                <label for="id_run">RUN</label>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-floating mb-3">
+                                {{ form.dv | add_class:"form-control" }}
+                                <label for="id_dv">DV</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                {{ form.first_name | add_class:"form-control" }}
+                                <label for="id_first_name">Nombre</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                {{ form.last_name | add_class:"form-control" }}
+                                <label for="id_last_name">Apellidos</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                {{ form.direccion | add_class:"form-control" }}
+                                <label for="id_direccion">Dirección de residencia</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-floating mb-3">
+                            {{ form.username | add_class:"form-control" }}
+                            <label for="id_username">Nombre de usuario</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-floating mb-3">
+                            {{ form.email | add_class:"form-control" }}
+                            <label for="id_email">Crear una dirección de correo electrónico</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                {{ form.password1 | add_class:"form-control" }}
+                                <label for="id_password1">Contraseña</label>
+                                <small class="form-text text-muted">
+                                    La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, una letra minúscula y un número.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                {{ form.password2 | add_class:"form-control" }}
+                                <label for="id_password2">Confirmar</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-floating mb-3">
+                            {{ form.group | add_class:"form-control" }}
+                            <label for="id_group">Asignar grupo</label>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'login' %}" class="btn btn-dark">Volver</a>
+                        <button class="btn btn-dark" type="submit">Registrarse</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -1,101 +1,128 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from productos.models import Producto, Categoria, Marca, PaisOrigen, Proveedor
-from productos.forms import CategoriaForm, MarcaForm, PaisOrigenForm, ProductoForm, ProveedorForm
-from roles.models import Empleado
+from . import forms
+from . import models
+
 
 @login_required
-def obtener_productos(request):
-    productos = Producto.objects.all()
-    
-    return render(request, 'components/obtener_productos.html', {'productos': productos})
-
-def catalogo(request):
-    empleado = Empleado.objects.get(usuario=request.user)
-    productos = Producto.objects.all()
+def categoria(request):
+    categorias = models.Categoria.objects.all().order_by("nombre")
     context = {
-        'productos': productos,
-        'empleado': empleado,
+        "categorias": categorias,
     }
-    
-    return render(request, 'components/catalogo.html', context)
+    return render(request, "components/productos/leer_categorias.html", context)
+
 
 @login_required
-def listado_categorias(request):
-    categorias = Categoria.objects.all()
-    
-    if request.method == 'POST':
-        form = CategoriaForm(request.POST)
-        
+def marca(request):
+    marcas = models.Marca.objects.all().order_by("nombre")
+    context = {
+        "marcas": marcas,
+    }
+    return render(request, "components/productos/leer_marcas.html", context)
+
+
+@login_required
+def procedencia(request):
+    procedencias = models.Procedencia.objects.all().order_by("codigo_iso")
+    context = {
+        "procedencias": procedencias,
+    }
+    return render(request, "components/productos/leer_procedencias.html", context)
+
+
+@login_required
+def producto(request):
+    productos = models.Producto.objects.all().order_by("categoria__nombre", "nombre")
+    context = {
+        "productos": productos,
+    }
+    return render(request, "components/productos/leer_productos.html", context)
+
+
+@login_required
+def proveedor(request):
+    proveedores = models.Proveedor.objects.all()
+    context = {
+        "proveedores": proveedores,
+    }
+    return render(request, "components/productos/leer_proveedores.html", context)
+
+
+@login_required
+def add_categoria(request):
+    if request.method == "POST":
+        form = forms.CategoriaForm(request.POST)
         if form.is_valid():
             form.save()
-            
-            return redirect('listado_categorias')
-        
+            messages.success(request, "Guardado correctamente en la base de datos")
+            return redirect("categorias")
     else:
-        form = CategoriaForm()
-        
+        form = forms.CategoriaForm()
     context = {
-        'form': form,
-        'categorias': categorias,
+        "form": form,
     }
-    
-    return render(request, 'components/listado_categorias.html', context)
+    return render(request, "components/productos/crear_categoria.html", context)
 
-@login_required
-def listado_marcas(request):
-    marcas = Marca.objects.all()
-    
-    return render(request, 'components/listado_marcas.html', {'marcas': marcas})
 
 @login_required
 def add_marca(request):
-    if request.method == 'POST':
-        form = MarcaForm(request.POST)
+    if request.method == "POST":
+        form = forms.MarcaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('obtener_productos')
+            messages.success(request, "Guardado correctamente en la base de datos")
+            return redirect("marcas")
     else:
-        form = MarcaForm()
-    return render(request, 'components/crear_marca.html', {'form': form})
-
-@login_required
-def crear_pais_origen(request):
-    if request.method == 'POST':
-        form = PaisOrigenForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('obtener_productos')
-    else:
-        form = PaisOrigenForm()
-    return render(request, 'components/crear_pais_origen.html', {'form': form})
-
-@login_required
-def listado_proveedores(request):
-    proveedores = Proveedor.objects.all()
-    
-    if request.method == 'POST':
-        form = ProveedorForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('listado_proveedores')
-    else:
-        form = ProveedorForm()
-    
+        form = forms.MarcaForm()
     context = {
-        'form': form,
-        'proveedores': proveedores
+        "form": form,
     }
-    
-    return render(request, 'components/listado_proveedores.html', context)
+    return render(request, "components/productos/crear_marca.html", context)
+
 
 @login_required
-def crear_producto(request):
-    if request.method == 'POST':
-        form = ProductoForm(request.POST)
+def add_procedencia(request):
+    if request.method == "POST":
+        form = forms.ProcedenciaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('obtener_productos')
+            messages.success(request, "Guardado correctamente en la base de datos")
+            return redirect("procedencias")
     else:
-        form = ProductoForm()
-    return render(request, 'components/crear_producto.html', {'form': form})
+        form = forms.ProcedenciaForm()
+    context = {
+        "form": form,
+    }
+    return render(request, "components/productos/crear_procedencia.html", context)
+
+
+@login_required
+def add_producto(request):
+    if request.method == "POST":
+        form = forms.ProductoForm(request.POST, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "El producto " + form.cleaned_data["nombre"] + " ha sido agregado correctamente.")
+            return redirect("productos")
+    else:
+        form = forms.ProductoForm()
+    context = {"form": form}
+    return render(request, "components/productos/crear_producto.html", context)
+
+
+@login_required
+def add_proveedor(request):
+    if request.method == "POST":
+        form = forms.ProveedorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Guardado correctamente en la base de datos")
+            return redirect("proveedores")
+    else:
+        form = forms.ProveedorForm()  # Initialize the form if the method is not POST
+    context = {
+        "form": form,
+    }
+    return render(request, "components/productos/crear_proveedor.html", context)

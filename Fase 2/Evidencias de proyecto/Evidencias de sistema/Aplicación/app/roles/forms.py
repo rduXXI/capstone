@@ -1,18 +1,31 @@
 from django import forms
-from django.contrib.auth.models import User
 from roles.models import Empleado
+
+
+class AsignarPuntosForm(forms.ModelForm):
+    class Meta:
+        model = Empleado
+        fields = {
+            "puntos",
+            "puntos_subasta",
+        }
+
+
+class PuntosForm(forms.ModelForm):
+    class Meta:
+        model = Empleado
+        fields = {
+            "usuario",
+            "puntos",
+            "puntos_subasta",
+        }
+
 
 class EmpleadoForm(forms.ModelForm):
     class Meta:
         model = Empleado
         fields = {
-            'puntos',
-        }
-        
-class PuntosForm(forms.ModelForm):
-    class Meta:
-        model = Empleado
-        fields = {
-            'usuario',
-            'puntos',
+            "run",
+            "dv",
+            "direccion",
         }

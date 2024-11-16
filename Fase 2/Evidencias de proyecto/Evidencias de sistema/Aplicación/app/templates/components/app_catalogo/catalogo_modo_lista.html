@@ -1,0 +1,127 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+<style>
+    h2 {
+        color: white;
+    }
+
+    h3 {
+        color: white;
+        font-size: 50px;
+        font-family: "Italianno", cursive;
+        font-style: normal;
+        text-align: center;
+    }
+
+    h4 {
+        color: white;
+        font-size: 25px;
+        font-family: 'Italianno', cursive;
+    }
+
+    h5 {
+        color: white;
+        font-size: 20px;
+        font-family: 'Bebas Neue';
+    }
+
+    p {
+        color: white;
+        font-size: 20px;
+        font-family: 'Bebas Neue';
+    }
+
+    .btn-success {
+        font-size: 20px;
+        font-family: 'Bebas Neue';
+    }
+
+    .btn-dark {
+        font-size: 40px;
+        font-family: 'Bebas Neue';
+    }
+
+    .btn-warning {
+        font-size: 20px;
+        font-family: 'Bebas Neue';
+    }
+
+    .btn-outline-warning {
+        font-size: 20px;
+        font-family: 'Bebas Neue';
+    }
+
+    input {
+        font-size: 20px;
+        font-family: 'Bebas Neue';
+    }
+</style>
+
+
+
+<div class="container mb-4" style="background: rgba(0, 0, 0, 0.85);"> 
+    <form method="POST" action="{% url 'canjear' %}">
+        {% csrf_token %}
+        <div class="sticky-top">
+            <div class="d-flex">
+                <a href="{% url 'catalogo' %}" class="btn btn-dark">
+                    <i class="bi bi-grid"></i>                </a>
+                &nbsp;
+                <button type="submit" class="btn btn-warning">Canjear productos seleccionados</button>
+            </div>
+        </div>
+        <!-- CATEGORIAS -->
+        {% regroup productos by categoria as grouped_products %}
+        {% for group in grouped_products %}
+        <div class="category-section mb-4">
+            <h3>{{ group.grouper }}</h3>
+            <hr style="color: white;">
+            <!-- PRODUCTOS -->
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                {% for producto in group.list %}
+                <div class="col">
+                    <div class="card bg-dark mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-8">
+                                    <h4 class="product-title text-start mb-3">
+                                        {{ producto.nombre }}
+                                    </h4>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <h4>
+                                        {{ producto.puntos_requeridos }} puntos
+                                    </h4>
+                                </div>
+                            </div>
+                            <figcaption class="blockquote-footer">
+                                {{ producto.descripcion }} de {{ producto.contenido }} ml
+                            </figcaption>
+                            {% if producto.stock == 0 %}
+                            <span class="badge bg-danger rounded-pill">Sin existencias</span>
+                            {% else %}
+                            <span class="badge bg-success rounded-pill">{{ producto.stock }} unidades disponibles</span>
+                            {% endif %}
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <input type="checkbox" class="btn-check" id="{{ producto.id }}" name="productos"
+                                    value="{{ producto.id }}">
+                                <label class="btn btn-outline-warning" for="{{ producto.id }}">
+                                    Seleccionar
+                                </label>
+                                &nbsp;
+                                <input type="number" name="cantidad_{{ producto.id }}" min="1" value="1"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </form>
+</div>
+
+{% endblock %}

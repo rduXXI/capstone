@@ -1,8 +1,8 @@
 from django.contrib import admin
-from productos.models import Categoria, Marca, PaisOrigen, Producto, Proveedor
+from . import models
 
-admin.site.register(Categoria)
-admin.site.register(Marca)
-admin.site.register(PaisOrigen)
-admin.site.register(Producto)
-admin.site.register(Proveedor)
+admin.site.register(models.Categoria)
+admin.site.register(models.Marca)
+admin.site.register(models.Procedencia)
+admin.site.register(models.Producto)
+admin.site.register(models.Proveedor)

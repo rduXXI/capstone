@@ -1,0 +1,87 @@
+{% extends 'layouts/base_admin.html' %}
+
+{% block content %}
+
+<style>
+    p {
+        font-size: 25px;
+        font-family: 'Arial';
+    }
+
+    .background {
+        background-color: rgba(0, 0, 0, 0.85);
+    }
+
+    .btn-dark {
+        font-size: 30px;
+        font-family: 'Bebas Neue';
+    }
+
+    .card-title {
+        font-size: 30px;
+        font-family: 'Bebas Neue';
+    }
+</style>
+
+{% if sorteo %}
+
+<div class="card mb-4 background">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <img src="{{ sorteo.producto.imagen.url }}" alt="" class="img-fluid">
+                        <h5 class="card-title">
+                            {{ producto.descripcion }} de {{ producto.nombre }}
+                        </h5>
+                        {% if participaciones %}
+                        <form method="post" action="{% url 'cerrar_sorteo' sorteo.producto.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Cerrar sorteo</button>
+                        </form>
+                        {% else %}
+                        <p>No se puede cerrar el sorteo porque no hay participaciones.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <th>Participante</th>
+                                <th>Fecha de participación</th>
+                            </thead>
+                            <tbody>
+                                {% for participacion in participaciones %}
+                                <tr>
+                                    <td>{{ participacion.empleado }}</td>
+                                    <td>{{ participacion.fecha_participacion }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<div class="card text-center mb-4 background">
+    <div class="card-body">
+        {% if request.user.is_staff %}
+        <a href="{% url 'crear_sorteo'%}" class="btn btn-dark">Publicar nuevo sorteo</a>
+        {% else %}
+        <h4>No hay sorteos disponibles en este momento.</h4>
+        {% endif %}
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

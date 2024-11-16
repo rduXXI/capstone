@@ -1,49 +1,39 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
-from roles.forms import EmpleadoForm, PuntosForm
+from productos.models import Producto
+from . import forms
 from roles.models import Empleado
+from django.contrib import messages
+
 
 @login_required
-def asignar_puntos(request, id=None):
+def add_puntos(request):
+    if request.method == "POST":
+        form = forms.PuntosForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("usuarios")
+    else:
+        form = forms.PuntosForm()
+    return render(request, "components/roles/add_puntos.html", {"form": form})
+
+
+@login_required
+def change_puntos(request, id=None):
     if id:
         empleado = get_object_or_404(Empleado, id=id)
     else:
         empleado = None
-
-    if request.method == 'POST':
-        formulario = EmpleadoForm(request.POST, request.FILES, instance=empleado)
-        if formulario.is_valid():
-            formulario.save()
-            datos = {
-                'mensaje': "Guardado correctamente",
-                'form': formulario
-            }
-            return redirect('listado_usuarios')
-        else:
-            datos = {
-                'form': formulario
-            }
-    else:
-        formulario = EmpleadoForm(instance=empleado)
-        datos = {
-            'form': formulario
-        }
-    
-    return render(request, 'components/asignar_puntos.html', datos)
-
-@login_required
-def crear_puntos(request):
-    if request.method == 'POST':
-        form = PuntosForm(request.POST)
+    if request.method == "POST":
+        form = forms.AsignarPuntosForm(request.POST, request.FILES, instance=empleado)
         if form.is_valid():
             form.save()
-            return redirect('listado_usuarios')
+            messages.success(request, "Guardado correctamente")
+            context = {"form": form}
+            return redirect("usuarios")
+        else:
+            context = {"form": form}
     else:
-        form = PuntosForm()
-    return render(request, 'components/asignar_puntos.html', {'form': form})
-
-def view_puntos(request):
-    if request.user.is_authenticated:
-        empleado = Empleado.objects.get(Empleado, usuario=request.user)
-        
-    return render(request, 'components/catalogo.html', {'puntos': empleado.puntos})
+        form = forms.AsignarPuntosForm(instance=empleado)
+        context = {"form": form}
+    return render(request, "components/roles/change_puntos.html", context)

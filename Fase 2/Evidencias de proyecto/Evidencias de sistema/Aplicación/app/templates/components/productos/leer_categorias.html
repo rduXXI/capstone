@@ -1,0 +1,46 @@
+{% extends 'layouts/base_admin.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+
+<style>
+    .btn.btn-dark {
+        font-size: 25px;
+        font-family: 'Bebas Neue';
+    }
+
+    th {
+        font-size: 20px;
+        font-family: "Bebas Neue";
+        font-weight: 400;
+    }
+
+    tbody {
+        font-family: "Arial";
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-sm">
+            <thead>
+                <th>Nombre de la categoría</th>
+            </thead>
+            <tbody>
+                {% for categoria in categorias %}
+                <tr>
+                    <td>{{ categoria.nombre }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td>No hay categorías registradas</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'add_categoria' %}" class="btn btn-dark">Añadir</a>
+    </div>
+</div>
+
+{% endblock %}

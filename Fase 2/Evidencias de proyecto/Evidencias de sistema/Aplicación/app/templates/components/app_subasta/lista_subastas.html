@@ -1,0 +1,85 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+<style>
+    .table {
+        font-size: 15px;
+        font-family: 'Arial';
+    }
+    .img-fluid {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .h5 {
+        color: white;
+        font-size: 20px;
+        font-family: 'Bebas Neue';
+    }
+</style>
+
+{% if subastas %}
+<div class="container col-md-4 offset-md mt-4">
+    <div class="card bg-dark text-center">
+        <div class="card-body">
+            <h4>Tus puntos para subastar: {{ empleado.puntos_subasta }} </h4>
+        </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-body">
+            <img src="{{ subastas.producto.imagen.url }}" alt="" class="img-fluid">
+            <div div class="d-grid gap-2">
+                <a class="btn btn-success">{{ subastas.estado }}</a>
+                <form method="post" action="{% url 'pujar' subastas.id %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-8">
+                            <input type="number" name="puntos_ofrecidos" placeholder="Ingresa aquí tus puntos"
+                                class="form-control" max="100" required>
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-dark">Pujar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container col-md-4 offset-md mt-4">
+    <div class="card bg-dark text-center">
+        <div class="card-body">
+            <table class="table table-dark">
+                <thead>
+                    <th>Participante</th>
+                    <th>Puntos ofrecidos</th>
+                </thead>
+                <tbody>
+                    {% for puja in pujas %}
+                    <tr>
+                        <td>{{ puja.empleado }}</td>
+                        <td>{{ puja.puntos_ofrecidos }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<div class="container col-md-4 offset-md mt-4">
+    <div class="card">
+        <div class="card-body">
+            <h4>No hay subastas disponibles en este momento.</h4>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

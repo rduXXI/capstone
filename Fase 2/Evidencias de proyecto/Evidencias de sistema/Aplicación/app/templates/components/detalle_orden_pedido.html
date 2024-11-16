@@ -1,0 +1,33 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+    <h1>Detalle de la Orden de Pedido #{{ orden.id }}</h1>
+    <p><strong>Empleado:</strong> {{ orden.empleado.username }}</p>
+    <p><strong>Fecha de Creación:</strong> {{ orden.fecha_creacion }}</p>
+    <p><strong>Total Puntos Gastados:</strong> {{ orden.total_puntos }}</p>
+
+    <h2>Productos Canjeados</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Puntos por Producto</th>
+                <th>Puntos Gastados</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto_canjeado in productos_canjeados %}
+            <tr>
+                <td>{{ producto_canjeado.producto.nombre }}</td>
+                <td>{{ producto_canjeado.cantidad }}</td>
+                <td>{{ producto_canjeado.producto.puntos_requeridos }}</td>
+                <td>{{ producto_canjeado.puntos_gastados }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'ordenes' %}">Volver a la lista de órdenes</a>
+
+{% endblock %}
